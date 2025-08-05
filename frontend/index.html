@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<!--
+File: frontend/index.html
+Description: Main HTML page for Emotion-Driven Data Landscape
+Author: AI Assistant
+Created: 2024
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Experience the emotional pulse of the internet through stunning data visualizations">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/dnoice/emotion-landscape">
+    <meta property="og:title" content="Emotion-Driven Data Landscape">
+    <meta property="og:description" content="Experience the emotional pulse of the internet through stunning data visualizations">
+    <meta property="og:image" content="https://raw.githubusercontent.com/dnoice/emotion-landscape/main/assets/images/readme-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://github.com/dnoice/emotion-landscape">
+    <meta property="twitter:title" content="Emotion-Driven Data Landscape">
+    <meta property="twitter:description" content="Experience the emotional pulse of the internet through stunning data visualizations">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/dnoice/emotion-landscape/main/assets/images/readme-image.png">
+    
+    <title>Emotion-Driven Data Landscape</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🌊</text></svg>">
+    
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Loading Screen Styles -->
+    <style>
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: #fff;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Initializing emotional landscape...</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="main-nav" class="nav-container">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <span class="logo-icon">🌊</span>
+                <span class="logo-text">Emotion Landscape</span>
+            </div>
+            
+            <div class="nav-controls">
+                <!-- Data Source Selector -->
+                <div class="control-group">
+                    <label for="source-select" class="control-label">Data Source</label>
+                    <select id="source-select" class="control-select">
+                        <option value="news">📰 News</option>
+                        <option value="reddit">💬 Reddit</option>
+                        <option value="quotes">💭 Quotes</option>
+                        <option value="wikipedia">📚 Wikipedia</option>
+                    </select>
+                </div>
+                
+                <!-- Visualization Mode -->
+                <div class="control-group">
+                    <label for="viz-mode" class="control-label">Visualization</label>
+                    <select id="viz-mode" class="control-select">
+                        <option value="particles">Emotion Particles</option>
+                        <option value="waves">Sentiment Waves</option>
+                        <option value="network">Topic Network</option>
+                        <option value="timeline">Time Series</option>
+                    </select>
+                </div>
+                
+                <!-- Refresh Button -->
+                <button id="refresh-btn" class="control-btn" title="Refresh Data">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                    </svg>
+                </button>
+                
+                <!-- Settings Button -->
+                <button id="settings-btn" class="control-btn" title="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v6m0 6v6m4.22-10.22l4.24-4.24m-4.24 12.68l4.24 4.24M20 12h-6m-6 0H1m10.22 4.22l-4.24 4.24m4.24-12.68L6.98 3.54"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Statistics Panel -->
+        <aside id="stats-panel" class="stats-container">
+            <div class="stats-header">
+                <h2>Emotional Pulse</h2>
+                <div class="pulse-indicator" id="pulse-indicator"></div>
+            </div>
+            
+            <div class="stats-content">
+                <!-- Overall Sentiment -->
+                <div class="stat-card">
+                    <h3>Overall Sentiment</h3>
+                    <div class="sentiment-meter">
+                        <div class="sentiment-bar" id="sentiment-bar"></div>
+                        <div class="sentiment-value" id="sentiment-value">0.00</div>
+                    </div>
+                    <div class="sentiment-label" id="sentiment-label">Neutral</div>
+                </div>
+                
+                <!-- Emotion Distribution -->
+                <div class="stat-card">
+                    <h3>Emotion Distribution</h3>
+                    <div class="emotion-chart" id="emotion-chart"></div>
+                </div>
+                
+                <!-- Top Topics -->
+                <div class="stat-card">
+                    <h3>Trending Topics</h3>
+                    <div class="topics-list" id="topics-list">
+                        <div class="topic-placeholder">Loading topics...</div>
+                    </div>
+                </div>
+                
+                <!-- Data Volume -->
+                <div class="stat-card">
+                    <h3>Data Volume</h3>
+                    <div class="volume-info">
+                        <div class="volume-stat">
+                            <span class="volume-label">Items Analyzed</span>
+                            <span class="volume-value" id="items-count">0</span>
+                        </div>
+                        <div class="volume-stat">
+                            <span class="volume-label">Update Rate</span>
+                            <span class="volume-value">Live</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Visualization Container -->
+        <section id="visualization" class="viz-container">
+            <div id="viz-canvas" class="viz-canvas"></div>
+            
+            <!-- Visualization Controls -->
+            <div class="viz-controls">
+                <button class="viz-control-btn" id="zoom-in" title="Zoom In">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35M11 8v6m-3-3h6"/>
+                    </svg>
+                </button>
+                <button class="viz-control-btn" id="zoom-out" title="Zoom Out">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35M8 11h6"/>
+                    </svg>
+                </button>
+                <button class="viz-control-btn" id="reset-view" title="Reset View">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8m0 0V3m0 5h5"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Tooltip -->
+            <div id="tooltip" class="tooltip" style="display: none;">
+                <div class="tooltip-content"></div>
+            </div>
+        </section>
+
+        <!-- Detail Panel -->
+        <aside id="detail-panel" class="detail-container" style="display: none;">
+            <div class="detail-header">
+                <h2>Item Details</h2>
+                <button class="close-btn" id="close-detail">×</button>
+            </div>
+            <div class="detail-content" id="detail-content">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </aside>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="close-btn" id="close-settings">×</button>
+            </div>
+            <div class="modal-body">
+                <!-- Animation Speed -->
+                <div class="setting-group">
+                    <label for="animation-speed">Animation Speed</label>
+                    <input type="range" id="animation-speed" min="0.1" max="2" step="0.1" value="1">
+                    <span class="setting-value" id="speed-value">1.0x</span>
+                </div>
+                
+                <!-- Particle Count -->
+                <div class="setting-group">
+                    <label for="particle-count">Particle Density</label>
+                    <input type="range" id="particle-count" min="10" max="200" step="10" value="50">
+                    <span class="setting-value" id="particle-value">50</span>
+                </div>
+                
+                <!-- Color Scheme -->
+                <div class="setting-group">
+                    <label for="color-scheme">Color Scheme</label>
+                    <select id="color-scheme" class="setting-select">
+                        <option value="default">Default</option>
+                        <option value="vibrant">Vibrant</option>
+                        <option value="pastel">Pastel</option>
+                        <option value="monochrome">Monochrome</option>
+                    </select>
+                </div>
+                
+                <!-- Sound Effects -->
+                <div class="setting-group">
+                    <label for="sound-enabled">
+                        <input type="checkbox" id="sound-enabled">
+                        Enable Ambient Sounds
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Text Analysis -->
+    <div id="custom-text-panel" class="floating-panel">
+        <button class="floating-btn" id="analyze-text-btn" title="Analyze Custom Text">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+            </svg>
+        </button>
+        
+        <div class="custom-text-form" id="custom-text-form" style="display: none;">
+            <h3>Analyze Your Text</h3>
+            <textarea id="custom-text-input" placeholder="Enter text to analyze its emotional content..." rows="4"></textarea>
+            <button class="analyze-btn" id="analyze-btn">Analyze</button>
+        </div>
+    </div>
+
+    <!-- GitHub Link -->
+    <a href="https://github.com/dnoice/emotion-landscape" 
+       target="_blank" 
+       class="github-link" 
+       title="View on GitHub">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+    </a>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/visualizer.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- Initialize App -->
+    <script>
+        // Initialize the application when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            window.emotionApp = new EmotionLandscapeApp();
+            window.emotionApp.init();
+        });
+    </script>
+</body>
+</html>

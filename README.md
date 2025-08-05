@@ -9,6 +9,12 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+<p align="center">
+  <img src="assets/images/readme-image.png" alt="Emotion-Driven Data Landscape - Visualizing the emotional waves of internet content" width="100%">
+  <br>
+  <em>Experience the emotional pulse of the internet through stunning, real-time visualizations</em>
+</p>
+
 ## 🌟 Project Overview
 
 This project creates an interactive web application that:
@@ -41,6 +47,9 @@ emotion-landscape/
 │   └── assets/              
 │       ├── fonts/           # Custom fonts
 │       └── sounds/          # Ambient sounds (optional)
+├── assets/
+│   └── images/              # Project images
+│       └── readme-image.png # README hero image
 ├── data/
 │   ├── cache/               # Cached API responses
 │   └── datasets/            # Static datasets
